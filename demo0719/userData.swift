@@ -1331,7 +1331,17 @@ let jsonStr =
         }
             ]
     """
+
+// 转成map后 用Model来包裹更友好 按照这种形式给到业务使用
+struct User {
+    let avatarImage: UIImage
+    let goodImage: UIImage
+}
+
 class UserData {
+
+    // 这里用[String: Any] 就好 看看Any AnyObject AnyClass的区别 https://juejin.cn/post/6844903672783044616  自己按按照关键词可以对比看看
+
     static var userArray : [[String: AnyObject]] = [[String: AnyObject]]()
     static var goodImageData : [UIImage] = [UIImage]()
     static var avatarImageData : [UIImage] = [UIImage]()

@@ -14,6 +14,20 @@ class ViewController: UIViewController {
     private var itemW : CGFloat = 0
     
     var layout : WaterfallLayout?
+
+    // 思考下为什么这种写法会更好
+    lazy var collectionView: UICollectionView = {
+        let layout = WaterfallLayout()
+        layout.minimumLineSpacing = 2
+        layout.minimumInteritemSpacing = 2
+        layout.sectionInset = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
+        layout.dataSource = self
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.dataSource = self
+        collectionView.backgroundColor = UIColor.white
+        collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: CollectionViewCell.kWaterCellID)
+        return collectionView
+    }()
 }
 
 extension ViewController : UICollectionViewDataSource {
@@ -27,7 +41,9 @@ extension ViewController : UICollectionViewDataSource {
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewCell.kWaterCellID, for: indexPath) as? CollectionViewCell
         cell!.removeFromSuperview()
-        cell!.config( layout?.dataIndex[ indexPath.row ] ?? 0 )
+
+        // 编码规范
+        cell!.config(layout?.dataIndex[ indexPath.row ] ?? 0)
         if indexPath.item == count - 1 {
             count += 10
             collectionView.reloadData()
@@ -45,7 +61,7 @@ extension ViewController : UICollectionViewDataSource {
 
 
 extension ViewController : WaterfallLayoutDataSource {
-    
+    // 生命周期最好不要放在 extension里
     override func viewDidLoad() {
         super.viewDidLoad()
         // 设置布局
@@ -61,5 +77,11 @@ extension ViewController : WaterfallLayoutDataSource {
         collectionView.backgroundColor = UIColor.white
         collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: CollectionViewCell.kWaterCellID)
         view.addSubview(collectionView)
+
+
+//        view.addSubview(self.collectionView)
+//        self.collectionView.snp.remakeConstraints { make in
+//            make.edges.equalToSuperview()
+//        }
     }
 }

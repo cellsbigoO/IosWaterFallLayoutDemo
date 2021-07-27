@@ -10,13 +10,21 @@ import SnapKit
 
 class CollectionViewCell: UICollectionViewCell {
     static let kWaterCellID = "kWaterCellID"
-    
-    var titleLabel : UILabel?
+
+    // 养成用懒加载的习惯，可以自己查下懒加载的好处，不要发散看就看这个点的好处，一般可以延迟加载和不用强制解包
+    lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        // 这里一般设置label的属性
+        return label
+    }()
+
+    // 注意Swift编码规范，空格的使用、不要强制解包等
     var goodImageView : UIImageView?
     var avatarImageView : UIImageView?
     var nicknameLabel : UILabel?
     var likeButton : UIButton?
     var likeCountLabel : UILabel?
+    // 这种类型如果不是特殊需要，不要用可选型，可以 itemW: CGFloat = 0
     var itemW : CGFloat?
     var likeButtonTouchCount = 0
     override init(frame: CGRect) {
@@ -24,11 +32,10 @@ class CollectionViewCell: UICollectionViewCell {
         itemW = 186
         // good 图片
         goodImageView = UIImageView()
-        self.addSubview(goodImageView!)
+        self.addSubview(goodImageView!)     // 注意规范，不需要 self
         
         // title 标签
-        titleLabel = UILabel()
-        self.addSubview(titleLabel!)
+        self.addSubview(titleLabel)
         
         // avatar 图片
         avatarImageView = UIImageView()
@@ -61,6 +68,9 @@ class CollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+
+    // 控件的设置如果不是每次config都要更改，就放在懒加载里，同样如果布局不是每次config都不一样都放在init时去做
     func config(_ dataIndex : Int){
         self.backgroundColor = UIColor.white
         // good 商品图片
@@ -85,9 +95,9 @@ class CollectionViewCell: UICollectionViewCell {
         titleLabel?.text = UserData.userArray[dataIndex]["desc"]  as! String
         titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
         titleLabel?.numberOfLines = 0
-        titleLabel?.snp.makeConstraints{
-            make in
+        titleLabel?.snp.makeConstraints { make in   // 注意写法
             make.top.equalTo(goodImageView!.snp.bottom).offset(6)
+            // make.left.equalToSuperView()  不要 equalTo(self)
             make.left.equalTo(self).offset(10)
             make.right.equalTo(self)
             make.width.equalTo(itemW!)
@@ -95,6 +105,8 @@ class CollectionViewCell: UICollectionViewCell {
         }
 
 //        // avatar 用户头像
+
+        // 使用数组索引一定要注意是否越界
         avatarImageView?.image = UserData.avatarImageData[dataIndex]
         avatarImageView?.snp.makeConstraints{
             make  in
