@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import Kingfisher
 let jsonStr =
     """
          [
@@ -1339,6 +1340,7 @@ struct User {
 }
 
 class UserData {
+<<<<<<< Updated upstream
 
     // 这里用[String: Any] 就好 看看Any AnyObject AnyClass的区别 https://juejin.cn/post/6844903672783044616  自己按按照关键词可以对比看看
 
@@ -1347,46 +1349,12 @@ class UserData {
     static var avatarImageData : [UIImage] = [UIImage]()
     static func getData() {
         // 解析JSON数据
+=======
+    // 这里用[String: Any] 就好 看看Any AnyObject AnyClass的区别 https://juejin.cn/post/6844903672783044616  自己按按照关键词可以对比看看
+    static var userArray: [[String: AnyObject]]  {
+>>>>>>> Stashed changes
         let jsonData = jsonStr.data(using: String.Encoding.utf8, allowLossyConversion: false)!
         let userArray = try? JSONSerialization.jsonObject(with: jsonData,options: .allowFragments) as? [[String: AnyObject]]
-        UserData.userArray = userArray!
-        
-        // 下载 good 图片
-        for i in 0..<UserData.userArray.count {
-            let urlimage : UIImage?
-            let url: URL?
-            if let str = UserData.userArray[i]["image_info"]?["url"] as? String{
-                url =  URL(string:str)
-            } else {
-                url = URL(string: "https://pic.qqtn.com/up/2019-9/15690311636958128.jpg")
-            }
-            do {
-                let data = try Data(contentsOf: url!)
-                urlimage = UIImage(data: data)
-            }catch let _ as NSError {
-                urlimage = UIImage(named: "card2")
-            }
-            goodImageData.append(urlimage!)
-        }
-        
-        // 下载 avatar 图片
-        for i in 0..<UserData.userArray.count {
-            let urlimage : UIImage?
-            let url: URL?
-            if let str = UserData.userArray[i]["user"]?["images"]  as? String{
-                url =  URL(string:str)
-            } else {
-                url = URL(string: "https://pic.qqtn.com/up/2019-9/15690311636958128.jpg")
-            }
-            do {
-                let data = try Data(contentsOf: url!)
-                urlimage = UIImage(data: data)
-            }catch _ as NSError {
-                urlimage = UIImage(named: "card2")
-            }
-            avatarImageData.append(urlimage!)
-        }
-        
-        
+        return userArray!
     }
 }

@@ -35,7 +35,7 @@ extension ViewController : UICollectionViewDataSource {
         return count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        itemW = WaterfallLayout.itemW!
+        itemW = WaterfallLayout.itemW
         
 //        print(UserData.userArray[0]["desc"] ?? "n" )
 
@@ -43,7 +43,13 @@ extension ViewController : UICollectionViewDataSource {
         cell!.removeFromSuperview()
 
         // 编码规范
+<<<<<<< Updated upstream
         cell!.config(layout?.dataIndex[ indexPath.row ] ?? 0)
+=======
+        if indexPath.row < layout?.dataIndex.count ?? indexPath.row - 1  {
+            cell!.config(layout?.dataIndex[indexPath.row] ?? 0)
+        }
+>>>>>>> Stashed changes
         if indexPath.item == count - 1 {
             count += 10
             collectionView.reloadData()
@@ -65,7 +71,6 @@ extension ViewController : WaterfallLayoutDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         // 设置布局
-        UserData.getData()
         layout = WaterfallLayout()
         layout?.minimumLineSpacing = 2
         layout?.minimumInteritemSpacing = 2
