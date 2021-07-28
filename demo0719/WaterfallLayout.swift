@@ -18,7 +18,7 @@ class WaterfallLayout: UICollectionViewFlowLayout {
     }()
     fileprivate var maxH : CGFloat = 0
     fileprivate var startIndex = 0
-    static var itemW : CGFloat?
+    static var itemW : CGFloat = 0
 }
 
 extension WaterfallLayout {
@@ -45,7 +45,7 @@ extension WaterfallLayout {
             // 随机一条数据
             dataIndex[indexPath.row] = Int.random(in: 0..<UserData.userArray.count )
             let userDataIndex = dataIndex[indexPath.row]
-            var height : CGFloat = (CGFloat(UserData.userArray[userDataIndex]["image_info"]?["height"] as? Int ?? 300) / CGFloat(UserData.userArray[userDataIndex]["image_info"]?["width"] as? Int ?? 180) * WaterfallLayout.itemW!) 
+            var height : CGFloat = (CGFloat(UserData.userArray[userDataIndex]["image_info"]?["height"] as? Int ?? 300) / CGFloat(UserData.userArray[userDataIndex]["image_info"]?["width"] as? Int ?? 180) * WaterfallLayout.itemW)
             
             height = height + ((UserData.userArray[userDataIndex]["desc"]?.size ?? 10) > 12 ? 100: 108)
             // 取出最小列的位置
@@ -54,7 +54,7 @@ extension WaterfallLayout {
             minH = minH + CGFloat(height) + minimumLineSpacing
             colHeights[index] = minH
             // 设置item的属性
-            attrs.frame = CGRect(x: self.sectionInset.left + (self.minimumInteritemSpacing + WaterfallLayout.itemW!) * CGFloat(index), y: minH - CGFloat(height) - self.minimumLineSpacing, width: WaterfallLayout.itemW!, height: CGFloat(height))
+            attrs.frame = CGRect(x: self.sectionInset.left + (self.minimumInteritemSpacing + WaterfallLayout.itemW) * CGFloat(index), y: minH - CGFloat(height) - self.minimumLineSpacing, width: WaterfallLayout.itemW, height: CGFloat(height))
             attrsArray.append(attrs)
         }
         
